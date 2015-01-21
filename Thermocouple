@@ -1,0 +1,47 @@
+#include <Bridge.h>
+#include <Process.h>
+
+
+
+void setup() {
+  // initialize Bridge
+  Bridge.begin();
+  
+  // initialize serial
+  Serial.begin(9600);
+  
+  //Wait until a serial monitor is connected
+  while(!Serial);
+  
+  //run cURL to post to database
+  
+  runCurl();
+
+}
+
+void loop() {
+  // Do nothing here
+
+}
+
+
+void runCurl(){
+  
+  //run "curl" command to get Arduino ascii logo
+  
+  Process p;
+  p.begin("curl");
+  p.addParameter("http://arduino.cc/asciilogo.txt");
+  p.run();
+  
+  
+  // Print arduino logo over the serial
+  while (p.available()>0) {
+    
+    char c = p.read();
+    Serial.print(c);
+  }
+  
+  Serial.flush();
+  
+}
